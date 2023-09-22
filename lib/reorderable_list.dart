@@ -44,6 +44,7 @@ class SliverReorderableList extends StatefulWidget {
     required this.itemCount,
     required this.onReorder,
     this.onReorderStart,
+    this.onReorderDroppable, // Potix:
     this.onReorderEnd,
     this.itemExtent,
     this.prototypeItem,
@@ -73,6 +74,9 @@ class SliverReorderableList extends StatefulWidget {
 
   /// {@macro flutter.widgets.reorderable_list.onReorderStart}
   final void Function(int)? onReorderStart;
+
+  /// Potix: A callback called while the droppable index has changed.
+  final void Function(int)? onReorderDroppable;
 
   /// {@macro flutter.widgets.reorderable_list.onReorderEnd}
   final void Function(int)? onReorderEnd;
@@ -519,6 +523,7 @@ class SliverReorderableListState extends State<SliverReorderableList> with Ticke
 
     if (newIndex != _insertIndex) {
       _insertIndex = newIndex;
+      widget.onReorderDroppable?.call(_insertIndex!); // Potix:
       for (final _ReorderableItemState item in _items.values) {
         if (item.index == _dragIndex! || !item.mounted) {
           continue;
