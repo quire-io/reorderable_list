@@ -860,6 +860,39 @@ class ReorderableDragStartListener extends StatelessWidget {
   }
 }
 
+/// A wrapper widget that will recognize the start of a drag operation by
+/// looking for a long press event. Once it is recognized, it will start
+/// a drag operation on the wrapped item in the reorderable list.
+///
+/// See also:
+///
+///  * [ReorderableDragStartListener], a similar wrapper that will
+///    recognize the start of the drag immediately after a pointer down event.
+///  * [ReorderableList], a widget list that allows the user to reorder
+///    its items.
+///  * [SliverReorderableList], a sliver list that allows the user to reorder
+///    its items.
+///  * [ReorderableListView], a Material Design list that allows the user to
+///    reorder its items.
+class ReorderableDelayedDragStartListener extends ReorderableDragStartListener {
+  /// Creates a listener for an drag following a long press event over the
+  /// given child widget.
+  ///
+  /// This is most commonly used to wrap an entire list item in a reorderable
+  /// list.
+  const ReorderableDelayedDragStartListener({
+    super.key,
+    required super.child,
+    required super.index,
+    super.enabled,
+  });
+
+  @override
+  MultiDragGestureRecognizer createRecognizer() {
+    return DelayedMultiDragGestureRecognizer(debugOwner: this);
+  }
+}
+
 typedef _DragItemUpdate = void Function(_DragInfo item, Offset position, Offset delta);
 typedef _DragItemCallback = void Function(_DragInfo item);
 
